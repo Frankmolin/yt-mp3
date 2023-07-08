@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Descargar Audio de YouTube</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f1f1f1;
+        }
+
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 300px;
+            max-width: 100%;
+            margin-bottom: 10px;
+        }
+
+        button[type="submit"] {
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            background-color: #4caf50;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .progress-bar {
+        width: 300px;
+        height: 10px;
+        background-color: #eee;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-top: 10px;
+      }
+
+      .progress-bar-inner {
+        height: 100%;
+        background-color: #4caf50;
+        transition: width 0.3s ease;
+      }
+    </style>
+</head>
+
+<body>
+
+
+    <h1>Descargar Audio de YouTube</h1>
+    <form id="formD" action="/download" method="get" onsubmit="showProgressBar()">
+        <label for="url">URL del video:</label>
+
+        <textarea autocomplete="off" rows="3"  cols="40" type="text" id="url" name="url" required> </textarea>
+        <button  type="submit">Descargar</button>
+        <div class="progress-bar">
+            <div class="progress-bar-inner"></div>
+          </div>
+    </form>
+    <script>
+        function showProgressBar() {
+        var progressBar = document.querySelector('.progress-bar-inner');
+        progressBar.style.width = '0%';
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/download?url=' + encodeURIComponent(document.getElementById('url').value));
+        xhr.responseType = 'blob';
+
+        xhr.addEventListener('progress', function (event) {
+          if (event.lengthComputable) {
+            var progressPercent = (event.loaded / event.total) * 100;
+            progressBar.style.width = progressPercent + '%';
+          }
+        });
+
+        xhr.addEventListener('load', function () {
+          progressBar.style.width = '100%';
+        });
+
+        xhr.addEventListener('error', function () {
+          progressBar.style.width = '0%';
+          alert('Error al descargar el archivo');
+        });
+
+        xhr.send();
+        return false;
+    }
+    </script>
+</body>
+
+</html>

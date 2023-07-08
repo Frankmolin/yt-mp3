@@ -1,0 +1,16 @@
+# Módulos y dependencias de Node.js
+/node_modules
+
+# Archivos generados al ejecutar scripts de construcción
+/build
+/dist
+
+# Logs y archivos de registro
+/logs
+*.log
+
+# Archivos de configuración locales
+.env
+
+# Otros archivos generados durante el desarrollo
+.DS_Store
